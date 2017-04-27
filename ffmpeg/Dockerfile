@@ -116,3 +116,5 @@ RUN		curl -O http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
 
 RUN		yum clean all
 RUN		rm -rfv ${WORKDIR}/ffmpeg
+
+ENTRYPOINT  ["/usr/local/bin/ffmpeg"]
