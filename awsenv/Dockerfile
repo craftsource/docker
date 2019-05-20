@@ -19,10 +19,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-FROM craftsource/awsenv
+FROM craftsource/awscli
 
 LABEL maintainer="lehn.todd@gmail.com"
 
-RUN apk add --no-cache --update nodejs-npm && \
-    npm install --verbose --global serverless --ignore-scripts postinstall && \
-    npm cache clean --force
+# Specifies an AWS access key associated with an IAM user or role, the secret
+# key associated with the access key and the ARN of the AWS IAM role to assume.
+ENV AWS_ACCESS_KEY_ID="" \
+    AWS_SECRET_ACCESS_KEY="" \
+    AWS_SESSION_TOKEN="" \
+    AWS_ROLE_ARN=""
+
+# Copy the sts script into the image.
+COPY sts.bash /usr/local/bin/sts.bash

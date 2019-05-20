@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # MIT License
 
 # Copyright (c) 2019 Todd Jason Lehn
@@ -19,10 +20,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-FROM craftsource/awsenv
 
-LABEL maintainer="lehn.todd@gmail.com"
+# assume_role assumes an AWS IAM role defined by the AWS_ROLE_ARN value. If
+# successful, the assumed role credentials are set via the AWS_ACCESS_KEY_ID,
+# AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN environment variables.
+# clear_credentials should be called once the assumed role is no longer needed
+# to prevent credentials being leaked across execution contexts.
+function assume_role(){
+    unset AWS_SESSION_TOKEN
+    output=$(aws sts assume-role \
+                    --role-arn "${AWS_ROLE_ARN}" \
+                    --role-session-name "awsenv")
 
-RUN apk add --no-cache --update nodejs-npm && \
-    npm install --verbose --global serverless --ignore-scripts postinstall && \
-    npm cache clean --force
+    export AWS_ACCESS_KEY_ID=$(echo $output | jq .Credentials.AccessKeyId | xargs)
+    export AWS_SECRET_ACCESS_KEY=$(echo $output | jq .Credentials.SecretAccessKey | xargs)
+    export AWS_SESSION_TOKEN=$(echo $output | jq .Credentials.SessionToken | xargs)
+}
+
+# clear_credentials clears the AWS_ environment variables that reference AWS
+# credentials.
+function clear_credentials(){
+    unset AWS_ROLE_ARN
+    unset AWS_SESSION_TOKEN
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+}
