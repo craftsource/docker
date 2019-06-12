@@ -19,8 +19,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-FROM craftsource/awscli:latest
+FROM craftsource/awscli:1.0.0
 
+LABEL version="v1.0.0"
 LABEL maintainer="lehn.todd@gmail.com"
 
 # Copy the sts script into the image.

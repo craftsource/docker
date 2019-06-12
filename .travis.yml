@@ -22,7 +22,7 @@
 dist: trusty
 
 env:
-  - TAG=latest
+  - TAG=1.0.0
 
 jobs:
   include:

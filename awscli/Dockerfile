@@ -21,6 +21,7 @@
 # SOFTWARE.
 FROM alpine:latest
 
+LABEL version="v1.0.0"
 LABEL maintainer="lehn.todd@gmail.com"
 
 # The --upgrade option tells pip3 to upgrade any requirements that are already
