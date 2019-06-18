@@ -26,5 +26,5 @@ LABEL maintainer="lehn.todd@gmail.com"
 
 # The --upgrade option tells pip3 to upgrade any requirements that are already
 # installed.
-RUN apk add --no-cache --update python3 jq && \
+RUN apk add --no-cache --update python3 jq bash && \
     pip3 install --no-cache-dir --upgrade pip setuptools awscli
