@@ -21,22 +21,30 @@
 # SOFTWARE.
 dist: trusty
 
-env:
-  - TAG=latest
-
 jobs:
   include:
     - stage: build
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u craftsource --password-stdin
-      - docker build -t craftsource/awscli:$TAG awscli
-      - docker build -t craftsource/awsenv:$TAG awsenv
-      - docker build -t craftsource/serverless:$TAG serverless
-      - docker push craftsource/awscli:$TAG
-      - docker push craftsource/awsenv:$TAG
-      - docker push craftsource/serverless:$TAG
+      - docker build -t craftsource/awscli:1.0.0 awscli
+      - docker build -t craftsource/awsenv:1.0.0 awsenv
+      - docker build -t craftsource/serverless:1.0.0 serverless
+      - docker build -t craftsource/sonarscanner:1.0.0 sonarscanner
+      - docker tag craftsource/awscli:1.0.0 craftsource/awscli:latest
+      - docker tag craftsource/awsenv:1.0.0 craftsource/awsenv:latest
+      - docker tag craftsource/serverless:1.0.0 craftsource/serverless:latest
+      - docker tag craftsource/sonarscanner:1.0.0 craftsource/sonarscanner:latest
+      - docker push craftsource/awscli:1.0.0
+      - docker push craftsource/awscli:latest
+      - docker push craftsource/awsenv:1.0.0
+      - docker push craftsource/awsenv:latest
+      - docker push craftsource/serverless:1.0.0
+      - docker push craftsource/serverless:latest
+      - docker push craftsource/sonarscanner:1.0.0
+      - docker push craftsource/sonarscanner:latest
     - stage: test
       script:
-      - docker run --rm craftsource/awscli:$TAG sh
-      - docker run --rm craftsource/awsenv:$TAG sh
-      - docker run --rm craftsource/serverless:$TAG sh
+      - docker run --rm craftsource/awscli:latest sh
+      - docker run --rm craftsource/awsenv:latest sh
+      - docker run --rm craftsource/serverless:latest sh
+      - docker run --rm craftsource/sonarscanner:latest sh
